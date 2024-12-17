@@ -12,7 +12,10 @@ import os
 import shutil
 
 def add_directory(name):
-    os.makedirs(name)
+    try:
+        os.makedirs(name)
+    except FileExistsError:
+        print("Katalog o podanej nazwie juz istnieje.")
 
 def show_directory():
     directory=[d for d in os.listdir('.') if
@@ -21,24 +24,23 @@ def show_directory():
 
 
 def delete_directory(directory):
-    if not os.path.exists(directory):
-        print("Katalog nie istnieje")
-        return
-    
-    else:
-        choice=input("Katalos istnieje. Czy na pewno chcesz usunac? (T/N)")
-        if choice=="T":
-            shutil.rmtree(directory)
-            print(f"Katalog {directory} zostal usuniety.")
-        else:
-            print("Katalog nie zostal usuniety.")
+    try:
+        if os.listdir(directory):
+            choice=input("Katalos istnieje. Czy na pewno chcesz usunac? (T/N)")
+            if choice.upper=="T":
+                shutil.rmtree(directory)
+                print(f"Katalog {directory} zostal usuniety.")
+            else:
+                print("Katalog nie zostal usuniety.")
+    except FileNotFoundError:
+        print("Katalog nie istnieje.")
 
 def rename_directory(directory,new_name):
-    if os.path.exists(directory):
+    try:    
         os.rename(directory,new_name)
         print("Nazwa katalogu zostala zmieniona.")
-    else:
-        print("Katalog nie istnieje.")
+    except FileNotFoundError:
+        print("Katalog o podanej nazwie nie istnieje.")
 
 if __name__=="__main__":
     while True:
