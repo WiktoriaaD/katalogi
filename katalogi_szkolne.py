@@ -14,6 +14,7 @@ import shutil
 def add_directory(name):
     try:
         os.makedirs(name)
+        print("Katalog zostal utworzony.")
     except FileExistsError:
         print("Katalog o podanej nazwie juz istnieje.")
 
